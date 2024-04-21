@@ -1,40 +1,42 @@
 import {useState, useEffect} from 'react';
 
 function App() {
-    const [merchants, setMerchants] = useState(false);
+    const [users, setUser] = useState(false);
 
-    function getMerchant() {
+    function getUser() {
         fetch('http://localhost:3001')
             .then(response => {
                 return response.text();
             })
             .then(data => {
-                setMerchants(data);
+                setUser(data);
             });
     }
 
-    function createMerchant() {
-        let name = prompt('Enter merchant name');
-        let email = prompt('Enter merchant email');
-        fetch('http://localhost:3001/merchants', {
+    function createUser() {
+        let name = prompt('Enter user name');
+        let password = prompt('Enter user password');
+        let email = prompt('Enter user email');
+        let role = prompt('Enter user role');
+        fetch('http://localhost:3001/users', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({name, email}),
+            body: JSON.stringify({name, password, email, role}),
         })
             .then(response => {
                 return response.text();
             })
             .then(data => {
                 alert(data);
-                getMerchant();
+                getUser();
             });
     }
 
-    function deleteMerchant() {
-        let id = prompt('Enter merchant id');
-        fetch(`http://localhost:3001/merchants/${id}`, {
+    function deleteUser() {
+        let iduser = prompt('Enter user id');
+        fetch(`http://localhost:3001/users/${iduser}`, {
             method: 'DELETE',
         })
             .then(response => {
@@ -42,42 +44,44 @@ function App() {
             })
             .then(data => {
                 alert(data);
-                getMerchant();
+                getUser();
             });
     }
 
-    function updateMerchant() {
-        let id = prompt('Enter merchant id');
-        let name = prompt('Enter new merchant name');
-        let email = prompt('Enter new merchant email');
-        fetch(`http://localhost:3001/merchants/${id}`, {
+    function updateUser() {
+        let iduser = prompt('Enter user id');
+        let name = prompt('Enter user name');
+        let password = prompt('Enter user password');
+        let email = prompt('Enter user email');
+        let role = prompt('Enter user role');
+        fetch(`http://localhost:3001/users/${iduser}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({name, email}),
+            body: JSON.stringify({name, password, email, role}),
         })
             .then(response => {
                 return response.text();
             })
             .then(data => {
                 alert(data);
-                getMerchant();
+                getUser();
             });
     }
 
     useEffect(() => {
-        getMerchant();
+        getUser();
     }, []);
     return (
         <div>
-            {merchants ? merchants : 'There is no merchant data available'}
+            {users ? users : 'There is no users data available'}
             <br />
-            <button onClick={createMerchant}>Add merchant</button>
+            <button onClick={createUser}>Add user</button>
             <br />
-            <button onClick={deleteMerchant}>Delete merchant</button>
+            <button onClick={deleteUser}>Delete user</button>
             <br />
-            <button onClick={updateMerchant}>Update merchant</button>
+            <button onClick={updateUser}>Update user</button>
         </div>
     );
 }

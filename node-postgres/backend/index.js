@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const port = 3001
 
-const merchant_model = require('./merchantModel')
+const user_model = require('./merchantModel')
 
 app.use(express.json())
 app.use(function (req, res, next) {
@@ -13,7 +13,7 @@ app.use(function (req, res, next) {
 });
 
 app.get('/', (req, res) => {
-    merchant_model.getMerchants()
+    user_model.getUser()
         .then(response => {
             res.status(200).send(response);
         })
@@ -22,8 +22,8 @@ app.get('/', (req, res) => {
         })
 })
 
-app.post('/merchants', (req, res) => {
-    merchant_model.createMerchant(req.body)
+app.post('/users', (req, res) => {
+    user_model.createUser(req.body)
         .then(response => {
             res.status(200).send(response);
         })
@@ -32,8 +32,8 @@ app.post('/merchants', (req, res) => {
         })
 })
 
-app.delete('/merchants/:id', (req, res) => {
-    merchant_model.deleteMerchant(req.params.id)
+app.delete('/users/:iduser', (req, res) => {
+    user_model.deleteUser(req.params.iduser)
         .then(response => {
             res.status(200).send(response);
         })
@@ -41,11 +41,11 @@ app.delete('/merchants/:id', (req, res) => {
             res.status(500).send(error);
         })
 })
-app.put("/merchants/:id", (req, res) => {
-    const id = req.params.id;
+app.put("/users/:iduser", (req, res) => {
+    const iduser = req.params.id;
     const body = req.body;
-    merchant_model
-        .updateMerchant(id, body)
+    user_model
+        .updateUser(iduser, body)
         .then((response) => {
             res.status(200).send(response);
         })

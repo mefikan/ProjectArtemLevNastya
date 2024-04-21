@@ -6,11 +6,10 @@ const pool = new Pool({
     password: "Arlen",
     port: 5432,
 });
-//get all merchants our database
-const getMerchants = async () => {
+const getUser = async () => {
     try {
         return await new Promise(function (resolve, reject) {
-            pool.query("SELECT * FROM merchants", (error, results) => {
+            pool.query("SELECT * FROM users", (error, results) => {
                 if (error) {
                     reject(error);
                 }
@@ -26,20 +25,19 @@ const getMerchants = async () => {
         throw new Error("Internal server error");
     }
 };
-//create a new merchant record in the databsse
-const createMerchant = (body) => {
+const createUser = (body) => {
     return new Promise(function (resolve, reject) {
-        const { name, email } = body;
+        const { name, password, email, role } = body;
         pool.query(
-            "INSERT INTO merchants (name, email) VALUES ($1, $2) RETURNING *",
-            [name, email],
+            "INSERT INTO users (name, password, email, role) VALUES ($1, $2, $3, $4) RETURNING *",
+            [name, password, email, role],
             (error, results) => {
                 if (error) {
                     reject(error);
                 }
                 if (results && results.rows) {
                     resolve(
-                        `A new merchant has been added: ${JSON.stringify(results.rows[0])}`
+                        `A new user has been added: ${JSON.stringify(results.rows[0])}`
                     );
                 } else {
                     reject(new Error("No results found"));
@@ -48,34 +46,32 @@ const createMerchant = (body) => {
         );
     });
 };
-//delete a merchant
-const deleteMerchant = (id) => {
+const deleteUser = (iduser) => {
     return new Promise(function (resolve, reject) {
         pool.query(
-            "DELETE FROM merchants WHERE id = $1",
-            [id],
+            "DELETE FROM users WHERE iduser = $1",
+            [iduser],
             (error, results) => {
                 if (error) {
                     reject(error);
                 }
-                resolve(`Merchant deleted with ID: ${id}`);
+                resolve(`User deleted with ID: ${iduser}`);
             }
         );
     });
 };
-//update a merchant record
-const updateMerchant = (id, body) => {
+const updateUser = (iduser, body) => {
     return new Promise(function (resolve, reject) {
-        const { name, email } = body;
+        const { name, password, email, role } = body;
         pool.query(
-            "UPDATE merchants SET name = $1, email = $2 WHERE id = $3 RETURNING *",
-            [name, email, id],
+            "UPDATE users SET name = $1, password = $2, email = $3, role = $4, WHERE iduser = $4 RETURNING *",
+            [name, password, email, role],
             (error, results) => {
                 if (error) {
                     reject(error);
                 }
                 if (results && results.rows) {
-                    resolve(`Merchant updated: ${JSON.stringify(results.rows[0])}`);
+                    resolve(`User updated: ${JSON.stringify(results.rows[0])}`);
                 } else {
                     reject(new Error("No results found"));
                 }
@@ -84,8 +80,8 @@ const updateMerchant = (id, body) => {
     });
 };
 module.exports = {
-    getMerchants,
-    createMerchant,
-    deleteMerchant,
-    updateMerchant
+    getUser,
+    createUser,
+    deleteUser,
+    updateUser
 };
