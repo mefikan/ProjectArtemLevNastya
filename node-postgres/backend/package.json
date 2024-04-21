@@ -1,16 +1,7 @@
 {
-  "name": "backend",
+  "name": "node-postgres",
   "version": "1.0.0",
-  "description": "",
+  "description": "Learn how NodeJS and Express can interact with PostgreSQL",
   "main": "index.js",
-  "scripts" : {
-    "test" : "jest"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.19.2",
-    "pg": "^8.11.5"
-  }
+  "license": "ISC"
 }
