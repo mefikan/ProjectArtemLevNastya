@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const uuid = require('uuid')
 const path = require('path')
 const {Device, DeviceInfo} = require('../models/models')
@@ -70,19 +69,3 @@ class DeviceController
 }
 
 module.exports = new DeviceController()
-=======
-class DeviceController
-{
-    async create(req, res) {
-
-    }
-    async get(req, res) {
-
-    }
-    async getOne(req, res) {
-
-    }
-}
-
-module.exports = new TypeController()
->>>>>>> 1f1c816c4cdadd1a8e3b24e2ab37a027940b12de

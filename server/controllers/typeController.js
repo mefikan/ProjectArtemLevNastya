@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const {Type} = require('../models/models')
 const ApiError = require('../error/ApiError')
 class TypeController
@@ -11,15 +10,6 @@ class TypeController
     async getAll(req, res){
         const types = await Type.findAll()
         return res.json(types)
-=======
-class TypeController
-{
-    async create(req, res) {
-
-    }
-    async get(req, res) {
-
->>>>>>> 1f1c816c4cdadd1a8e3b24e2ab37a027940b12de
     }
 }
 
