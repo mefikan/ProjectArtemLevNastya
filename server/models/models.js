@@ -29,7 +29,7 @@ const restaurant = sequelize.define('restaurant', {
 })
 
 const favoritePlaces = sequelize.define('favoritePlaces', {
-
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true}
 })
 
 const address = sequelize.define('address', {
@@ -66,6 +66,8 @@ const visit_restaurant = sequelize.define('visit_restaurant', {
     Rate: {type: DataTypes.INTEGER},
     visit_restaurantcol: {type: DataTypes.STRING},
 })
+
+
 
 users.hasMany(swipes)
 swipes.belongsTo(users)

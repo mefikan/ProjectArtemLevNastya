@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="9a65dbe9-6f68-4cd0-89ca-70724630d816" name="Changes" comment="Добавлена реализация users БД">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/.env" beforeDir="false" afterPath="$PROJECT_DIR$/server/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/models/models.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/models.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -82,7 +84,7 @@
       <workItem from="1714821263401" duration="39000" />
       <workItem from="1714821307709" duration="119000" />
       <workItem from="1714821435257" duration="567000" />
-      <workItem from="1714822005588" duration="4373000" />
+      <workItem from="1714822005588" duration="5368000" />
     </task>
     <task id="LOCAL-00001" summary="Внедрить базу данных в проект">
       <option name="closed" value="true" />
