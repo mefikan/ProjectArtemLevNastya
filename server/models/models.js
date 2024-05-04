@@ -1,90 +1,113 @@
 const sequelize = require('../db')
 const {DataTypes} = require('sequelize')
 
-const User = sequelize.define('user', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+const users = sequelize.define('users', {
+    idUser: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     email: {type: DataTypes.STRING, unique: true,},
     password: {type: DataTypes.STRING},
     role: {type: DataTypes.STRING, defaultValue: "USER"},
 })
 
-const Basket = sequelize.define('basket', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+const swipes = sequelize.define('swipes', {
+    idswipes: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    tag: {type: DataTypes.STRING},
+    boolArray: {type: DataTypes.STRING},
 })
 
-const BasketDevice = sequelize.define('basket_device', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+const note = sequelize.define('note', {
+    idNote: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    text: {type: DataTypes.STRING},
+    title: {type: DataTypes.STRING},
+    date: {type: DataTypes.DATE},
 })
 
-const Device = sequelize.define('device', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, unique: true, allowNull: false},
-    price: {type: DataTypes.INTEGER, allowNull: false},
-    rating: {type: DataTypes.INTEGER, defaultValue: 0},
-    img: {type: DataTypes.STRING, allowNull: false},
+const restaurant = sequelize.define('restaurant', {
+    idRestaurant: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING, unique: true,},
+    rating: {type: DataTypes.INTEGER},
+    properties: {type: DataTypes.STRING},
 })
 
-const Type = sequelize.define('type', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, unique: true, allowNull: false},
+const favoritePlaces = sequelize.define('favoritePlaces', {
+
 })
 
-const Brand = sequelize.define('brand', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, unique: true, allowNull: false},
+const address = sequelize.define('address', {
+    idAddress: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    locationLongtitude: {type: DataTypes.DECIMAL(9)},
+    locationLatitude: {type: DataTypes.DECIMAL(9)},
+    address: {type: DataTypes.STRING, unique: true,},
 })
 
-const Rating = sequelize.define('rating', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    rate: {type: DataTypes.INTEGER, allowNull: false},
+const weight = sequelize.define('weight', {
+    idWeight: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    weight: {type: DataTypes.INTEGER},
 })
 
-const DeviceInfo = sequelize.define('device_info', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    title: {type: DataTypes.STRING, allowNull: false},
-    description: {type: DataTypes.STRING, allowNull: false},
+const dish = sequelize.define('dish', {
+    idDish: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    dishName: {type: DataTypes.STRING},
 })
 
-const TypeBrand = sequelize.define('type_brand', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+const menu = sequelize.define('menu', {
+    dishPrice: {type: DataTypes.STRING},
 })
 
+const foodproperty = sequelize.define('foodproperty', {
+    idfoodproperty: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    propertyname: {type: DataTypes.STRING},
+})
 
-User.hasOne(Basket)
-Basket.belongsTo(User)
+const visit_restaurant = sequelize.define('visit_restaurant', {
+    idVisit: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    date: {type: DataTypes.DATE},
+    review: {type: DataTypes.STRING},
+    visitCount: {type: DataTypes.INTEGER},
+    Rate: {type: DataTypes.INTEGER},
+    visit_restaurantcol: {type: DataTypes.STRING},
+})
 
-User.hasMany(Rating)
-Rating.belongsTo(User)
+users.hasMany(swipes)
+swipes.belongsTo(users)
 
-Basket.hasMany(BasketDevice)
-BasketDevice.belongsTo(Basket)
+users.hasMany(note)
+note.belongsTo(users)
 
-Type.hasMany(Device)
-Device.belongsTo(Type)
+users.belongsToMany(restaurant, {through: favoritePlaces})
+restaurant.belongsToMany(users, {through: favoritePlaces})
 
-Brand.hasMany(Device)
-Device.belongsTo(Brand)
+users.hasMany(visit_restaurant)
+visit_restaurant.belongsTo(users)
 
-Device.hasMany(Rating)
-Rating.belongsTo(Device)
+restaurant.hasMany(visit_restaurant)
+visit_restaurant.belongsTo(restaurant)
 
-Device.hasMany(BasketDevice)
-BasketDevice.belongsTo(Device)
+restaurant.hasOne(address)
+address.belongsTo(restaurant)
 
-Device.hasMany(DeviceInfo, {as: 'info'});
-DeviceInfo.belongsTo(Device)
+restaurant.hasOne(menu)
+menu.belongsTo(restaurant)
 
-Type.belongsToMany(Brand, {through: TypeBrand })
-Brand.belongsToMany(Type, {through: TypeBrand })
+dish.hasMany(menu)
+menu.belongsTo(dish)
+
+dish.hasOne(foodproperty)
+foodproperty.belongsTo(dish)
+
+weight.hasMany(dish)
+dish.belongsTo(weight)
+
 
 module.exports = {
-    User,
-    Basket,
-    BasketDevice,
-    Device,
-    Type,
-    Brand,
-    Rating,
-    TypeBrand,
-    DeviceInfo
+    users,
+    swipes,
+    note,
+    restaurant,
+    favoritePlaces,
+    address,
+    weight,
+    dish,
+    menu,
+    foodproperty,
+    visit_restaurant
 }

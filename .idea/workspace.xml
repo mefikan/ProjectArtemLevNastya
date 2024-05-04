@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a65dbe9-6f68-4cd0-89ca-70724630d816" name="Changes" comment="Добавлена реализация users БД">
-      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/.env" beforeDir="false" afterPath="$PROJECT_DIR$/server/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/models.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/models.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,7 +24,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="levBranch1" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -55,7 +55,7 @@
     "Node.js.merchantmodel.js.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "levBranch1",
+    "git-widget-placeholder": "levBranch__updated",
     "last_opened_file_path": "/Users/n0m1n4t3d/WebstormProjects/ProjectArtemLevNastya",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -82,7 +82,7 @@
       <workItem from="1714821263401" duration="39000" />
       <workItem from="1714821307709" duration="119000" />
       <workItem from="1714821435257" duration="567000" />
-      <workItem from="1714822005588" duration="987000" />
+      <workItem from="1714822005588" duration="4373000" />
     </task>
     <task id="LOCAL-00001" summary="Внедрить базу данных в проект">
       <option name="closed" value="true" />
