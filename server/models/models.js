@@ -1,64 +1,64 @@
 const sequelize = require('../db')
 const {DataTypes} = require('sequelize')
 
-const users = sequelize.define('users', {
+const User = sequelize.define('User', {
     idUser: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     email: {type: DataTypes.STRING, unique: true,},
     password: {type: DataTypes.STRING},
     role: {type: DataTypes.STRING, defaultValue: "USER"},
 })
 
-const swipes = sequelize.define('swipes', {
+const Swipes = sequelize.define('swipes', {
     idswipes: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     tag: {type: DataTypes.STRING},
     boolArray: {type: DataTypes.STRING},
 })
 
-const note = sequelize.define('note', {
+const Note = sequelize.define('note', {
     idNote: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     text: {type: DataTypes.STRING},
     title: {type: DataTypes.STRING},
     date: {type: DataTypes.DATE},
 })
 
-const restaurant = sequelize.define('restaurant', {
+const Restaurant = sequelize.define('restaurant', {
     idRestaurant: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING, unique: true,},
     rating: {type: DataTypes.INTEGER},
     properties: {type: DataTypes.STRING},
 })
 
-const favoritePlaces = sequelize.define('favoritePlaces', {
+const FavoritePlaces = sequelize.define('favoritePlaces', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true}
 })
 
-const address = sequelize.define('address', {
+const Address = sequelize.define('address', {
     idAddress: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     locationLongtitude: {type: DataTypes.DECIMAL(9)},
     locationLatitude: {type: DataTypes.DECIMAL(9)},
     address: {type: DataTypes.STRING, unique: true,},
 })
 
-const weight = sequelize.define('weight', {
+const Weight = sequelize.define('weight', {
     idWeight: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     weight: {type: DataTypes.INTEGER},
 })
 
-const dish = sequelize.define('dish', {
+const Dish = sequelize.define('dish', {
     idDish: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     dishName: {type: DataTypes.STRING},
 })
 
-const menu = sequelize.define('menu', {
+const Menu = sequelize.define('menu', {
     dishPrice: {type: DataTypes.STRING},
 })
 
-const foodproperty = sequelize.define('foodproperty', {
+const Foodproperty = sequelize.define('foodproperty', {
     idfoodproperty: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     propertyname: {type: DataTypes.STRING},
 })
 
-const visit_restaurant = sequelize.define('visit_restaurant', {
+const Visit_restaurant = sequelize.define('visit_restaurant', {
     idVisit: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     date: {type: DataTypes.DATE},
     review: {type: DataTypes.STRING},
@@ -69,47 +69,47 @@ const visit_restaurant = sequelize.define('visit_restaurant', {
 
 
 
-users.hasMany(swipes)
-swipes.belongsTo(users)
+User.hasMany(Swipes)
+Swipes.belongsTo(User)
 
-users.hasMany(note)
-note.belongsTo(users)
+User.hasMany(Note)
+Note.belongsTo(User)
 
-users.belongsToMany(restaurant, {through: favoritePlaces})
-restaurant.belongsToMany(users, {through: favoritePlaces})
+User.belongsToMany(Restaurant, {through: FavoritePlaces})
+Restaurant.belongsToMany(User, {through: FavoritePlaces})
 
-users.hasMany(visit_restaurant)
-visit_restaurant.belongsTo(users)
+User.hasMany(Visit_restaurant)
+Visit_restaurant.belongsTo(User)
 
-restaurant.hasMany(visit_restaurant)
-visit_restaurant.belongsTo(restaurant)
+Restaurant.hasMany(Visit_restaurant)
+Visit_restaurant.belongsTo(Restaurant)
 
-restaurant.hasOne(address)
-address.belongsTo(restaurant)
+Restaurant.hasOne(Address)
+Address.belongsTo(Restaurant)
 
-restaurant.hasOne(menu)
-menu.belongsTo(restaurant)
+Restaurant.hasOne(Menu)
+Menu.belongsTo(Restaurant)
 
-dish.hasMany(menu)
-menu.belongsTo(dish)
+Dish.hasMany(Menu)
+Menu.belongsTo(Dish)
 
-dish.hasOne(foodproperty)
-foodproperty.belongsTo(dish)
+Dish.hasOne(Foodproperty)
+Foodproperty.belongsTo(Dish)
 
-weight.hasMany(dish)
-dish.belongsTo(weight)
+Weight.hasMany(Dish)
+Dish.belongsTo(Weight)
 
 
 module.exports = {
-    users,
-    swipes,
-    note,
-    restaurant,
-    favoritePlaces,
-    address,
-    weight,
-    dish,
-    menu,
-    foodproperty,
-    visit_restaurant
+    User,
+    Swipes,
+    Note,
+    Restaurant,
+    FavoritePlaces,
+    Address,
+    Weight,
+    Dish,
+    Menu,
+    Foodproperty,
+    Visit_restaurant
 }
