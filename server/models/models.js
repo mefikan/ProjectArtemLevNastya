@@ -8,24 +8,23 @@ const User = sequelize.define('User', {
     role: {type: DataTypes.STRING, defaultValue: "USER"},
 })
 
-const Swipes = sequelize.define('swipes', {
+const Swipe = sequelize.define('swipes', {
     idswipes: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    tag: {type: DataTypes.STRING},
-    boolArray: {type: DataTypes.STRING},
+    tag: {type: DataTypes.STRING}
 })
 
 const Note = sequelize.define('note', {
     idNote: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     text: {type: DataTypes.STRING},
     title: {type: DataTypes.STRING},
-    date: {type: DataTypes.DATE},
+    date: {type: DataTypes.DATE}
 })
 
 const Restaurant = sequelize.define('restaurant', {
     idRestaurant: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING, unique: true,},
-    rating: {type: DataTypes.INTEGER},
-    properties: {type: DataTypes.STRING},
+    rating: {type: DataTypes.DECIMAL(2)},
+    properties: {type: DataTypes.STRING}
 })
 
 const FavoritePlaces = sequelize.define('favoritePlaces', {
@@ -36,26 +35,23 @@ const Address = sequelize.define('address', {
     idAddress: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     locationLongtitude: {type: DataTypes.DECIMAL(9)},
     locationLatitude: {type: DataTypes.DECIMAL(9)},
-    address: {type: DataTypes.STRING, unique: true,},
-})
-
-const Weight = sequelize.define('weight', {
-    idWeight: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    weight: {type: DataTypes.INTEGER},
+    address: {type: DataTypes.STRING, unique: true}
 })
 
 const Dish = sequelize.define('dish', {
     idDish: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     dishName: {type: DataTypes.STRING},
+    dishSize: {type: DataTypes.STRING},
+    dishTag: {type: DataTypes.STRING}
 })
 
 const Menu = sequelize.define('menu', {
-    dishPrice: {type: DataTypes.STRING},
+    dishPrice: {type: DataTypes.STRING}
 })
 
 const Foodproperty = sequelize.define('foodproperty', {
     idfoodproperty: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    propertyname: {type: DataTypes.STRING},
+    propertyname: {type: DataTypes.STRING}
 })
 
 const Visit_restaurant = sequelize.define('visit_restaurant', {
@@ -64,13 +60,13 @@ const Visit_restaurant = sequelize.define('visit_restaurant', {
     review: {type: DataTypes.STRING},
     visitCount: {type: DataTypes.INTEGER},
     Rate: {type: DataTypes.INTEGER},
-    visit_restaurantcol: {type: DataTypes.STRING},
+    visit_restaurantcol: {type: DataTypes.STRING}
 })
 
 
 
-User.hasMany(Swipes)
-Swipes.belongsTo(User)
+User.hasMany(Swipe)
+Swipe.belongsTo(User)
 
 User.hasMany(Note)
 Note.belongsTo(User)
@@ -93,21 +89,19 @@ Menu.belongsTo(Restaurant)
 Dish.hasMany(Menu)
 Menu.belongsTo(Dish)
 
-Dish.hasOne(Foodproperty)
+Dish.hasMany(Foodproperty)
 Foodproperty.belongsTo(Dish)
 
-Weight.hasMany(Dish)
-Dish.belongsTo(Weight)
-
+Swipe.hasMany(Foodproperty)
+Foodproperty.belongsTo(Foodproperty)
 
 module.exports = {
     User,
-    Swipes,
+    Swipe,
     Note,
     Restaurant,
     FavoritePlaces,
     Address,
-    Weight,
     Dish,
     Menu,
     Foodproperty,

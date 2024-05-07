@@ -4,7 +4,7 @@ const noteController = require('../controllers/noteController')
 const authMiddleware = require('../middleware/authMiddleware')
 
 router.post('/create', noteController.create)
-router.get('/get_note', noteController.getOne)
-router.get('/main', authMiddleware, noteController.getAll)
+router.get('/getOne', noteController.getOne)
+router.get('/getAll', authMiddleware, noteController.getAll)
 
 module.exports = router
