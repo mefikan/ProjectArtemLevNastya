@@ -7,4 +7,6 @@ router.post('/create', authMiddleware, swipeController.create)
 router.post('/addProperty', authMiddleware, swipeController.swipeAddProperty)
 router.get('/getOne', authMiddleware, swipeController.getOne)
 router.get('/getAll', authMiddleware, swipeController.getAll)
+router.get('/getProperties', authMiddleware, swipeController.getAllCurrentSwipeProperties)
+
 module.exports = router
