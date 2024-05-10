@@ -19,6 +19,10 @@ class SwipeController
         })
         return res.json(property)
     }
+    async chooseDish(req, res, next)
+    {
+
+    }
     /*Создание свайпа с привязкой к пользователю*/
     async create(req, res, next) {
         const {tag} = req.body
@@ -110,5 +114,6 @@ async function getCurrentUserSwipeId(token) {
     const neededSwipeId = neededSwipe['dataValues']['idswipes']
     return(neededSwipeId)
 }
+
 
 module.exports = new SwipeController()
