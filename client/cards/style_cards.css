@@ -1,0 +1,20 @@
+/* Стили для карточек */
+#cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Стили для карточки */
+.card {
+    width: 200px;
+    height: 300px;
+    margin: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Стили для результата */
+#result {
+    text-align: center;
+}
