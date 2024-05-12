@@ -1,25 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Игра «Право/лево»</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Your Preference</title>
     <style>
-        /* Здесь вы можете добавить стили для вашей страницы */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .card {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-<div id="cards">
-    <!-- Здесь будут выводиться карточки -->
-</div>
-<div id="result">
-    <!-- Здесь будет выводиться результат -->
-</div>
-<button id="start">Начать игру</button>
+    <div class="container">
+        <div id="card1" class="card">
+            <h2>Choose Your Preference</h2>
+            <button onclick="showCard('food')">Food</button>
+            <button onclick="showCard('drinks')">Drinks</button>
+        </div>
+        <div id="card2" class="card" style="display: none;">
+            <h2 id="choice"></h2>
+        </div>
+    </div>
 
-<!-- Здесь вы можете добавить другие элементы страницы -->
-
-<script>
-    // Здесь вы можете добавить код для игры
-</script>
+    <script>
+        function showCard(choice) {
+            document.getElementById("card1").style.display = "none";
+            document.getElementById("card2").style.display = "block";
+            document.getElementById("choice").innerText = choice.charAt(0).toUpperCase() + choice.slice(1);
+        }
+    </script>
 </body>
 </html>
