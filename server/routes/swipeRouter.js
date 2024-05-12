@@ -8,5 +8,5 @@ router.post('/addProperty', authMiddleware, swipeController.swipeAddProperty)
 router.get('/getOne', authMiddleware, swipeController.getOne)
 router.get('/getAll', authMiddleware, swipeController.getAll)
 router.get('/getProperties', authMiddleware, swipeController.getAllCurrentSwipeProperties)
-
+router.get('/getDish', authMiddleware, swipeController.getDishAccordingToSwipes)
 module.exports = router

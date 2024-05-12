@@ -8,53 +8,53 @@ const User = sequelize.define('User', {
     role: {type: DataTypes.STRING, defaultValue: "USER"},
 })
 
-const Swipe = sequelize.define('swipes', {
+const Swipe = sequelize.define('Swipe', {
     idswipes: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     tag: {type: DataTypes.STRING}
 })
 
-const Note = sequelize.define('note', {
+const Note = sequelize.define('Note', {
     idNote: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     text: {type: DataTypes.STRING},
     title: {type: DataTypes.STRING},
     date: {type: DataTypes.DATE}
 })
 
-const Restaurant = sequelize.define('restaurant', {
+const Restaurant = sequelize.define('Restaurant', {
     idRestaurant: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING, unique: true,},
     rating: {type: DataTypes.DECIMAL(2)},
     properties: {type: DataTypes.STRING}
 })
 
-const FavoritePlaces = sequelize.define('favoritePlaces', {
+const FavoritePlaces = sequelize.define('FavoritePlaces', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true}
 })
 
-const Address = sequelize.define('address', {
+const Address = sequelize.define('Address', {
     idAddress: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     locationLongtitude: {type: DataTypes.DECIMAL(9)},
     locationLatitude: {type: DataTypes.DECIMAL(9)},
     address: {type: DataTypes.STRING, unique: true}
 })
 
-const Dish = sequelize.define('dish', {
+const Dish = sequelize.define('Dish', {
     idDish: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     dishName: {type: DataTypes.STRING},
     dishSize: {type: DataTypes.STRING},
     dishTag: {type: DataTypes.STRING}
 })
 
-const Menu = sequelize.define('menu', {
+const Menu = sequelize.define('Menu', {
     dishPrice: {type: DataTypes.STRING}
 })
 
-const Foodproperty = sequelize.define('foodproperty', {
+const Foodproperty = sequelize.define('Foodproperty', {
     idfoodproperty: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     propertyname: {type: DataTypes.STRING}
 })
 
-const Visit_restaurant = sequelize.define('visit_restaurant', {
+const Visit_restaurant = sequelize.define('Visit_restaurant', {
     idVisit: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     date: {type: DataTypes.DATE},
     review: {type: DataTypes.STRING},

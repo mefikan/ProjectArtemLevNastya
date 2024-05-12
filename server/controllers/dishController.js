@@ -23,7 +23,7 @@ class DishController
         const {propertyname, idDish} = req.body
         const property = Foodproperty.create({
             propertyname: propertyname,
-            dishIdDish: idDish
+            DishIdDish: idDish
         })
         return res.json(property)
     }

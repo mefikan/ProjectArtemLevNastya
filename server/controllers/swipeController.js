@@ -15,7 +15,7 @@ class SwipeController
         const swipeId = await getCurrentUserSwipeId(token)
         const property = await Foodproperty.create({
             propertyname: propertyname,
-            swipeIdswipes: swipeId
+            SwipeIdswipes: swipeId
         })
         return res.json(property)
     }
@@ -65,7 +65,7 @@ class SwipeController
         const properties = await Foodproperty.findAll(
             {
                 where: {
-                    swipeIdswipes: swipeId
+                    SwipeIdswipes: swipeId
                 }
             }
         )
@@ -75,7 +75,29 @@ class SwipeController
         const token = req.headers.authorization.split(' ')[1]
         const swipeId = await getCurrentUserSwipeId(token)
         const {Op} = require('sequelize')
+        /*
+        Нужно найти максимум совпадений между свойствами свайпа и св-вами блюда
+        Выберем свойства последнего свайпа и будем выбирать блюдо, имеющее
+        максимум( СУММА (свойство свайпа * свойство блюда), где названия свойств равны)
+         */
+        const sequalize = require('sequelize')
+        const bestDishId = Foodproperty.findAll(
+            {
+                //attributes: ['dishIdDish'],
+                //attributes: ['swipeIdswipes'],
+                include: [
+                  [
+                      sequalize.literal(`
+                      (
+                        SELECT * FROM Foodproperty
+                      )
+                      `)
+                  ]
+                ],
+            }
+        )
 
+        return res.json(bestDishId)
     }
 }
 async function getUserId(token) {
