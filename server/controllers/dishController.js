@@ -21,7 +21,7 @@ class DishController
 {
     async dishAddProperty(req, res, next) {
         const {propertyname, idDish} = req.body
-        const property = Foodproperty.create({
+        const property = await Foodproperty.create({
             propertyname: propertyname,
             DishIdDish: idDish
         })
@@ -29,8 +29,8 @@ class DishController
     }
     async create(req, res, next) {
         const {dishName, dishSize} = req.body
-        const token = req.headers.authorization.split(' ')[1]
-        const UserIdUser = await get_user_id(token)
+        //const token = req.headers.authorization.split(' ')[1]
+        //const UserIdUser = await get_user_id(token)
         const dish = await Dish.create({dishName, dishSize})
         return res.json(dish)
     }

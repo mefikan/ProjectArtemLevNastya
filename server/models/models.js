@@ -53,6 +53,10 @@ const Foodproperty = sequelize.define('Foodproperty', {
     idfoodproperty: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     propertyname: {type: DataTypes.STRING}
 })
+const SwipeFoodproperty = sequelize.define('SwipeFoodproperty', {
+    idfoodproperty: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    propertyname: {type: DataTypes.STRING}
+})
 
 const Visit_restaurant = sequelize.define('Visit_restaurant', {
     idVisit: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
@@ -62,8 +66,6 @@ const Visit_restaurant = sequelize.define('Visit_restaurant', {
     Rate: {type: DataTypes.INTEGER},
     visit_restaurantcol: {type: DataTypes.STRING}
 })
-
-
 
 User.hasMany(Swipe)
 Swipe.belongsTo(User)
@@ -92,8 +94,8 @@ Menu.belongsTo(Dish)
 Dish.hasMany(Foodproperty)
 Foodproperty.belongsTo(Dish)
 
-Swipe.hasMany(Foodproperty)
-Foodproperty.belongsTo(Foodproperty)
+Swipe.hasMany(SwipeFoodproperty)
+SwipeFoodproperty.belongsTo(Swipe)
 
 module.exports = {
     User,
@@ -105,5 +107,6 @@ module.exports = {
     Dish,
     Menu,
     Foodproperty,
-    Visit_restaurant
+    Visit_restaurant,
+    SwipeFoodproperty
 }

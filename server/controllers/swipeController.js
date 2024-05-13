@@ -1,10 +1,11 @@
 
 const path = require('path')
-const {Swipe, Foodproperty, User} = require('../models/models')
+const {Swipe, Foodproperty, SwipeFoodproperty, User} = require('../models/models')
 const ApiError = require('../error/ApiError')
-const {where, Op} = require("sequelize");
+const {where, Op, QueryTypes} = require("sequelize");
 const jwt = require("jsonwebtoken");
 
+const sequelize = require('../db')
 class SwipeController
 {
     /*Свойство добавляется к текущему свайпу у пользователя,
@@ -13,7 +14,7 @@ class SwipeController
         const {propertyname} = req.body
         const token = req.headers.authorization.split(' ')[1]
         const swipeId = await getCurrentUserSwipeId(token)
-        const property = await Foodproperty.create({
+        const property = await SwipeFoodproperty.create({
             propertyname: propertyname,
             SwipeIdswipes: swipeId
         })
@@ -62,7 +63,7 @@ class SwipeController
     {
         const token = req.headers.authorization.split(' ')[1]
         const swipeId = await getCurrentUserSwipeId(token)
-        const properties = await Foodproperty.findAll(
+        const properties = await SwipeFoodproperty.findAll(
             {
                 where: {
                     SwipeIdswipes: swipeId
@@ -78,26 +79,31 @@ class SwipeController
         /*
         Нужно найти максимум совпадений между свойствами свайпа и св-вами блюда
         Выберем свойства последнего свайпа и будем выбирать блюдо, имеющее
-        максимум( СУММА (свойство свайпа * свойство блюда), где названия свойств равны)
+        максимум( КОЛИЧЕСТВО (свойство свайпа * свойство блюда), где названия свойств равны)
          */
-        const sequalize = require('sequelize')
-        const bestDishId = Foodproperty.findAll(
-            {
-                //attributes: ['dishIdDish'],
-                //attributes: ['swipeIdswipes'],
-                include: [
-                  [
-                      sequalize.literal(`
-                      (
-                        SELECT * FROM Foodproperty
-                      )
-                      `)
-                  ]
-                ],
+        let FindDishInd = await sequelize.query(
+            'SELECT MAX(gr.cnt), di."dishName" as DishName\n' +
+            '\tFROM(\n' +
+            '\t\tSELECT COUNT(*) as cnt, fp."DishIdDish" as did\n' +
+            '\t\t\tFROM "Foodproperties" as fp \n' +
+            '\t\t\tinner join "SwipeFoodproperties" as sfp\n' +
+            '\t\t\ton  fp.propertyname = sfp.propertyname\t\n' +
+            '\t\t\twhere sfp."SwipeIdswipes" = :swipeId_\n' +
+            '\t\t\tgroup by did\n' +
+            '\t) as gr\n' +
+            '\tinner join "Dishes" as di on di."idDish" = gr.did\n' +
+            '\tinner join "Swipes" as sw on sw."tag" = di."dishTag"\n' +
+            '\tgroup by DishName\n' +
+            '\torder by MAX(gr.cnt) DESC LIMIT 1',
+    {
+                replacements: {
+                    swipeId_: swipeId
+                },
+                type: QueryTypes.SELECT
             }
         )
 
-        return res.json(bestDishId)
+        return res.json(FindDishInd)
     }
 }
 async function getUserId(token) {
@@ -108,7 +114,10 @@ async function getUserId(token) {
         userInfo = await User.findOne({where: {
                 email: email
             }})
-    let userId = userInfo["dataValues"]["idUser"]
+    let userId;
+    if (userInfo!=null) {
+        userId = userInfo["dataValues"]["idUser"]
+    }
     return(userId)
 }
 async function getCurrentUserSwipeId(token) {
