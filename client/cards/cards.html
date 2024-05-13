@@ -33,21 +33,59 @@
 </head>
 <body>
     <div class="container">
+        <!-- Карта 1: Выбор предпочтения (еда или напитки) -->
         <div id="card1" class="card">
             <h2>Choose Your Preference</h2>
-            <button onclick="showCard('food')">Food</button>
-            <button onclick="showCard('drinks')">Drinks</button>
+            <button onclick="showNextCard('food')">Food</button>
+            <button onclick="showNextCard('drinks')">Drinks</button>
         </div>
+        <!-- Карта 2: Выбор горячего или холодного -->
         <div id="card2" class="card" style="display: none;">
-            <h2 id="choice"></h2>
+            <h2>Choose Hot or Cold</h2>
+            <button onclick="showPreviousCard()">Previous</button>
+            <button onclick="showNextCard('cold')">Cold</button>
+            <button onclick="showNextCard('hot')">Hot</button>
+        </div>
+        <!-- Карта 3: Выбор сладкого или соленого -->
+        <div id="card3" class="card" style="display: none;">
+            <h2>Choose Sweet or Salty</h2>
+            <button onclick="showPreviousCard()">Previous</button>
+            <button onclick="showNextCard('sweet')">Sweet</button>
+            <button onclick="showNextCard('salty')">Salty</button>
         </div>
     </div>
 
     <script>
-        function showCard(choice) {
+        // Функция для отображения следующей карты в зависимости от выбора пользователя
+        function showNextCard(nextCard) {
+            // Скрытие текущей карты
             document.getElementById("card1").style.display = "none";
-            document.getElementById("card2").style.display = "block";
-            document.getElementById("choice").innerText = choice.charAt(0).toUpperCase() + choice.slice(1);
+            document.getElementById("card2").style.display = "none";
+            document.getElementById("card3").style.display = "none";
+            
+            // Отображение следующей карты в зависимости от выбора
+            const currentCard = document.getElementById("card" + nextCard.charAt(0));
+            currentCard.style.display = "block";
+        }
+
+        // Функция для отображения предыдущей карты
+        function showPreviousCard() {
+            // Скрытие текущей карты
+            const currentCard = document.querySelector('.card[style*="display: block"]');
+            currentCard.style.display = "none";
+
+            // Получение ID текущей карты и ID предыдущей карты
+            const currentCardId = parseInt(currentCard.id.replace('card', ''));
+            const previousCardId = currentCardId - 1;
+
+            // Отображение предыдущей карты
+            if (previousCardId > 0) {
+                const previousCard = document.getElementById("card" + previousCardId);
+                previousCard.style.display = "block";
+            } else {
+                // Если предыдущая карта отсутствует, отображается первая карта
+                document.getElementById("card1").style.display = "block";
+            }
         }
     </script>
 </body>
