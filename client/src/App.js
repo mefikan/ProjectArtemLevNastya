@@ -130,7 +130,6 @@ const App = () => {
                 <div className="card">
                     <div className="summary">
                         <h2>Your choice is:</h2>
-
                     </div>
                 </div>
             )}
