@@ -23,7 +23,7 @@ const Note = sequelize.define('Note', {
 const Restaurant = sequelize.define('Restaurant', {
     idRestaurant: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING, unique: true,},
-    rating: {type: DataTypes.DECIMAL(2)},
+    rating: {type: DataTypes.DOUBLE(2, 2)},
     properties: {type: DataTypes.STRING}
 })
 
@@ -33,8 +33,8 @@ const FavoritePlaces = sequelize.define('FavoritePlaces', {
 
 const Address = sequelize.define('Address', {
     idAddress: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    locationLongtitude: {type: DataTypes.DECIMAL(9)},
-    locationLatitude: {type: DataTypes.DECIMAL(9)},
+    locationLongtitude: {type: DataTypes.DOUBLE(9,10)},
+    locationLatitude: {type: DataTypes.DOUBLE(9,10)},
     address: {type: DataTypes.STRING, unique: true}
 })
 
@@ -46,7 +46,8 @@ const Dish = sequelize.define('Dish', {
 })
 
 const Menu = sequelize.define('Menu', {
-    dishPrice: {type: DataTypes.STRING}
+    dishPrice: {type: DataTypes.DOUBLE(5,3)},
+    dishRating: {type: DataTypes.DOUBLE(2,2)}
 })
 
 const Foodproperty = sequelize.define('Foodproperty', {
