@@ -12,7 +12,7 @@ root.render(
   </React.StrictMode>
 );
 
-export const Context = createContext(null)
+//export const Context = createContext(null)
 
 ReacrDDM.render(
     <Context.Provider value ={{
