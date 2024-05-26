@@ -82,19 +82,21 @@ class SwipeController
         максимум( КОЛИЧЕСТВО (свойство свайпа * свойство блюда), где названия свойств равны)
          */
         let FindDishInd = await sequelize.query(
-            'SELECT MAX(gr.cnt), di."dishName" as DishName\n' +
-            '\tFROM(\n' +
-            '\t\tSELECT COUNT(*) as cnt, fp."DishIdDish" as did\n' +
-            '\t\t\tFROM "Foodproperties" as fp \n' +
-            '\t\t\tinner join "SwipeFoodproperties" as sfp\n' +
-            '\t\t\ton  fp.propertyname = sfp.propertyname\t\n' +
-            '\t\t\twhere sfp."SwipeIdswipes" = :swipeId_\n' +
-            '\t\t\tgroup by did\n' +
-            '\t) as gr\n' +
-            '\tinner join "Dishes" as di on di."idDish" = gr.did\n' +
-            '\tinner join "Swipes" as sw on sw."tag" = di."dishTag"\n' +
-            '\tgroup by DishName\n' +
-            '\torder by MAX(gr.cnt) DESC LIMIT 1',
+            'SELECT gr.cnt, di."dishName" as DishName, menus."dishRating"\n' +
+            '            FROM(\n' +
+            '\t            SELECT COUNT(*) as cnt, fp."DishIdDish" as did\n' +
+            '\t            FROM "Foodproperties" as fp\n' +
+            '\t            inner join "SwipeFoodproperties" as sfp\n' +
+            '\t            on  fp.propertyname = sfp.propertyname\n' +
+            '\t            where sfp."SwipeIdswipes" = :swipeId_\n' +
+            '\t            group by did\n' +
+            '            ) as gr\n' +
+            '            inner join "Dishes" as di on di."idDish" = gr.did\n' +
+            '    \t\tinner join "Menus" as menus on  di."idDish" = menus."DishIdDish"        \n' +
+            '\t\t\tinner join "Swipes" as sw on sw."tag" = di."dishTag"\n' +
+            '            group by DishName, gr.cnt, menus."dishRating"\n' +
+            '            order by MAX(menus."dishRating") desc, \n' +
+            '\t\t\tMAX(gr.cnt) DESC LIMIT 1',
     {
                 replacements: {
                     swipeId_: swipeId
