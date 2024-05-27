@@ -5,6 +5,7 @@ const authMiddleware = require('../middleware/authMiddleware')
 
 router.post('/create', authMiddleware, swipeController.create)
 router.post('/addProperty', authMiddleware, swipeController.swipeAddProperty)
+router.post('/addProperties', authMiddleware, swipeController.swipeAddProperties)
 router.get('/getOne', authMiddleware, swipeController.getOne)
 router.get('/getAll', authMiddleware, swipeController.getAll)
 router.get('/getProperties', authMiddleware, swipeController.getAllCurrentSwipeProperties)

@@ -20,9 +20,30 @@ class SwipeController
         })
         return res.json(property)
     }
-    async chooseDish(req, res, next)
-    {
+    async swipeAddProperties(req, res, next) {
+        const {tag, ch1, ch2, ch3, ch4} = req.body
+        const token = req.headers.authorization.split(' ')[1]
+        const UserIdUser = await getUserId(token)
+        const swipe = await Swipe.create({tag, UserIdUser})
 
+        const swipeId = await getCurrentUserSwipeId(token)
+        await SwipeFoodproperty.create({
+            propertyname: ch1,
+            SwipeIdswipes: swipeId
+        })
+        await SwipeFoodproperty.create({
+            propertyname: ch2,
+            SwipeIdswipes: swipeId
+        })
+        await SwipeFoodproperty.create({
+            propertyname: ch3,
+            SwipeIdswipes: swipeId
+        })
+        await SwipeFoodproperty.create({
+            propertyname: ch4,
+            SwipeIdswipes: swipeId
+        })
+        return res.json("success!")
     }
     /*Создание свайпа с привязкой к пользователю*/
     async create(req, res, next) {
@@ -95,8 +116,9 @@ class SwipeController
             '    \t\tinner join "Menus" as menus on  di."idDish" = menus."DishIdDish"        \n' +
             '\t\t\tinner join "Swipes" as sw on sw."tag" = di."dishTag"\n' +
             '            group by DishName, gr.cnt, menus."dishRating"\n' +
-            '            order by MAX(menus."dishRating") desc, \n' +
-            '\t\t\tMAX(gr.cnt) DESC LIMIT 1',
+            '            order by MAX(gr.cnt) desc, \n' +
+            '\t\t\tMAX(menus."dishRating") desc\n' +
+            '\t\t\tLIMIT 1',
     {
                 replacements: {
                     swipeId_: swipeId

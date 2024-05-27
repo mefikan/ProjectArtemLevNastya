@@ -1,5 +1,4 @@
 import axios from "axios";
-import {Context} from "../index";
 import {useContext} from "react";
 
 const $host = axios.create({
@@ -11,9 +10,7 @@ const $authHost = axios.create({
 })
 
 const AuthInterceptor = config => {
-    let {User} = useContext(Context)
-    let token= User.User()
-    config.headers.authorization = `Bearer ${token}`
+    config.headers.authorization = `Bearer ${localStorage.getItem('token')}`
     return config
 }
 
