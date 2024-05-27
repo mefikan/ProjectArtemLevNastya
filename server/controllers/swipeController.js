@@ -96,6 +96,8 @@ class SwipeController
     async getDishAccordingToSwipes(req, res, next){
         const token = req.headers.authorization.split(' ')[1]
         const swipeId = await getCurrentUserSwipeId(token)
+        const swipeTag = await getCurrentUserSwipeTag(token)
+        console.log(swipeTag)
         const {Op} = require('sequelize')
         /*
         Нужно найти максимум совпадений между свойствами свайпа и св-вами блюда
@@ -112,16 +114,18 @@ class SwipeController
             '\t            where sfp."SwipeIdswipes" = :swipeId_\n' +
             '\t            group by did\n' +
             '            ) as gr\n' +
-            '            inner join "Dishes" as di on di."idDish" = gr.did\n' +
-            '    \t\tinner join "Menus" as menus on  di."idDish" = menus."DishIdDish"        \n' +
-            '\t\t\tinner join "Swipes" as sw on sw."tag" = di."dishTag"\n' +
+            '    \t\t      \n' +
+            '\t\t\tinner join "Dishes" as di on di."idDish" = gr.did\n' +
+            '\t\t\tinner join "Swipes" as sw on sw."tag" = di."dishTag"  \t\t\n' +
+            '\t\t\tinner join "Menus" as menus on  di."idDish" = menus."DishIdDish"        \n' +
+            '\t\t\twhere di."dishTag" = :swipeTag_' +
             '            group by DishName, gr.cnt, menus."dishRating"\n' +
-            '            order by MAX(gr.cnt) desc, \n' +
-            '\t\t\tMAX(menus."dishRating") desc\n' +
-            '\t\t\tLIMIT 1',
+            '            order by MAX(gr.cnt) DESC, \n' +
+            '\t\t\tMAX(menus."dishRating") desc LIMIT 1',
     {
                 replacements: {
-                    swipeId_: swipeId
+                    swipeId_: swipeId,
+                    swipeTag_: swipeTag
                 },
                 type: QueryTypes.SELECT
             }
@@ -167,6 +171,31 @@ async function getCurrentUserSwipeId(token) {
         }
     )
     const neededSwipeId = neededSwipe['dataValues']['idswipes']
+    return(neededSwipeId)
+}
+async function getCurrentUserSwipeTag(token){
+    const idUser = await getUserId(token)
+    const {Op} = require('sequelize')
+    const neededSwipe = await Swipe.findOne(
+        {
+            where:
+                {
+                    [Op.and]: [
+                        {
+                            idswipes: {
+                                [Op.eq]: await Swipe.max('idswipes')
+                            }
+                        },
+                        {
+                            UserIdUser: {
+                                [Op.eq]: idUser
+                            }
+                        }
+                    ]
+                }
+        }
+    )
+    const neededSwipeId = neededSwipe['dataValues']['tag']
     return(neededSwipeId)
 }
 
