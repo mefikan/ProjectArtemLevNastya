@@ -61,7 +61,7 @@ describe('SwipeController', () => {
                 json: jest.fn()
             };
 
-            // Mock Swipe.create to resolve with a swipe object
+            // Mock SwipePage.create to resolve with a swipe object
             Swipe.create = jest.fn().mockResolvedValue({
                 tag: 'Test Tag',
                 UserIdUser: 1 // Mock UserIdUser
@@ -73,7 +73,7 @@ describe('SwipeController', () => {
             // Assert that res.json was called
             expect(res.json).toHaveBeenCalled();
 
-            // Assert that Swipe.create was called with correct arguments
+            // Assert that SwipePage.create was called with correct arguments
             expect(Swipe.create).toHaveBeenCalledWith({
                 tag: 'Test Tag',
                 UserIdUser: expect.any(Number)
@@ -95,10 +95,10 @@ describe('SwipeController', () => {
                 json: jest.fn()
             };
 
-            // Mock Swipe.findAll to resolve with an array of swipes
+            // Mock SwipePage.findAll to resolve with an array of swipes
             Swipe.findAll = jest.fn().mockResolvedValue([
-                { tag: 'Swipe 1', UserIdUser: 1 },
-                { tag: 'Swipe 2', UserIdUser: 1 }
+                { tag: 'SwipePage 1', UserIdUser: 1 },
+                { tag: 'SwipePage 2', UserIdUser: 1 }
             ]);
 
             // Call the controller method
@@ -107,7 +107,7 @@ describe('SwipeController', () => {
             // Assert that res.json was called
             expect(res.json).toHaveBeenCalled();
 
-            // Assert that Swipe.findAll was called with correct arguments
+            // Assert that SwipePage.findAll was called with correct arguments
             expect(Swipe.findAll).toHaveBeenCalledWith({
                 where: {
                     UserIdUser: expect.any(Number)

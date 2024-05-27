@@ -2,9 +2,24 @@ import React, {useContext, useState} from 'react';
 import './App.css';
 import {createSwipeWithProps, getDish, login, registration} from "./http/userAPI";
 import {Context} from "./index";
-import {json} from "react-router-dom";
+
+import {BrowserRouter} from "react-router-dom";
+import AppRouter from "./components/AppRouter";
 
 const App = () => {
+    return (
+        <>
+            <BrowserRouter>
+                <AppRouter/>
+            </BrowserRouter>
+
+        </>
+    )
+
+
+
+
+
     const [step, setStep] = useState(0);
     const [selections, setSelections] = useState({});
     const [randomSteps, setRandomSteps] = useState([]);
@@ -233,5 +248,4 @@ const App = () => {
         </div>
     );
 };
-
 export default App;

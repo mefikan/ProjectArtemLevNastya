@@ -21,7 +21,7 @@ describe('Проверка наличия констант', () => {
         expect(User).toBeDefined();
     });
 
-    it('должен существовать объект Swipe', () => {
+    it('должен существовать объект SwipePage', () => {
         expect(Swipe).toBeDefined();
     });
 
