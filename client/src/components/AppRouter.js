@@ -10,7 +10,6 @@ const AppRouter = () => {
         <Routes>
             <Route path={'/swipe'} element={<SwipePage/>}/>
             <Route path={'/'} element={<HomePage/>}/>
-
         </Routes>
     )
 };

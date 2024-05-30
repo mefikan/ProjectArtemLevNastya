@@ -1,6 +1,4 @@
 import {$authHost, $host} from "./index";
-import {useContext} from "react";
-import {Context} from "../index";
 
 export const registration = async (email, password) => {
     const {data} = await $host.post('api/user/registration', {email, password})
