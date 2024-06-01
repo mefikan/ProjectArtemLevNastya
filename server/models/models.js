@@ -42,12 +42,14 @@ const Dish = sequelize.define('Dish', {
     idDish: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     dishName: {type: DataTypes.STRING},
     dishSize: {type: DataTypes.STRING},
-    dishTag: {type: DataTypes.STRING}
+    dishTag: {type: DataTypes.STRING},
+    imageId: {type: DataTypes.STRING}
 })
 
 const Menu = sequelize.define('Menu', {
     dishPrice: {type: DataTypes.DOUBLE(5,3)},
-    dishRating: {type: DataTypes.DOUBLE(2,2)}
+    dishRating: {type: DataTypes.DOUBLE(2,2)},
+    ratesNumber: {type: DataTypes.INTEGER}
 })
 
 const Foodproperty = sequelize.define('Foodproperty', {

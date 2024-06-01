@@ -3,6 +3,7 @@ import '../styles/Swipe.css';
 import {createSwipeWithProps, getDish, login, registration} from "../http/userAPI";
 import {Context} from "../index";
 
+//тут нужно сократить все и сделать через useEffect, чтобы как тригер все работало и не было 1000 строк однотипного кодаы
 const Swipe = () => {
         const [step, setStep] = useState(0);
         const [selections, setSelections] = useState({});
