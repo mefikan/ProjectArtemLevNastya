@@ -3,11 +3,21 @@ import {makeAutoObservable} from "mobx";
 export default class UserStore {
     constructor() {
         this._isAuth = false
-        this._user = {}
+        this._userToken = {}
         this._choice = []
         this._tag={}
         this._finalDish={}
+        this._usedIndexes=[]
         makeAutoObservable(this)
+    }
+    addUsedIndexes(index){
+        this._usedIndexes.push(index)
+    }
+    clearUsedIndexes(){
+        this._usedIndexes=[]
+    }
+    get UsedIndexes(){
+        return this._usedIndexes
     }
     setTag(tag){
         this._tag = tag
@@ -26,8 +36,8 @@ export default class UserStore {
         this._isAuth = bool
     }
 
-    setUser(user) {
-        this._user = user
+    setUser(userToken) {
+        this._userToken = userToken
     }
     clearChoice()
     {
@@ -45,6 +55,6 @@ export default class UserStore {
         return this._isAuth
     }
     get userToken() {
-        return this._user
+        return this._userToken
     }
 }
