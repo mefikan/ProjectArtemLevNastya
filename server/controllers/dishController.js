@@ -53,8 +53,6 @@ class DishController
                 {dishName, dishSize, dishTag, image: filename, description,
                     dishPrice: dishPrice, ratesNumber: 0, dishRating: dishRating, RestaurantIdRestaurant: RestaurantIdRestaurant})
             let dishId = dish.dataValues.idDish
-            console.log(dishId)
-            console.log(dish)
             await Foodproperty.create({
                 propertyname: p1,
                 DishIdDish: dishId

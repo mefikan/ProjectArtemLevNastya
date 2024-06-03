@@ -3,7 +3,8 @@ import '../styles/Swipe.css';
 import {createSwipeWithProps, getDish, login, registration} from "../http/userAPI";
 import {Context} from "../index";
 import {foodArr, drinkArr} from "../utils/consts";
-import {Button, Card, Col, Container, Image, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Image, Row, Stack} from "react-bootstrap";
+import {getOneRestaurant} from "../http/restaurantAPI";
 
 let currentArray = []
 //тут нужно сократить все и сделать через useEffect, чтобы как тригер все работало и не было 1000 строк однотипного кодаы
@@ -14,6 +15,9 @@ const Swipe = () => {
         const [foodType, setFoodType] = useState(''); // 0 - еда, 1 - напитки
         const [left, setLeft] = useState('Еда')
         const [right, setRight] = useState('Напитки')
+        const [restS, setRestS] = useState([])
+
+
         const HandleCardClick = (name, side) => {
             console.log(step)
             console.log(name)
@@ -48,12 +52,22 @@ const Swipe = () => {
         }
         async function HandleOkClick() {
             let tmp_arr = user.choice
-            user.clearChoice()
             let response = await createSwipeWithProps(foodType, tmp_arr[0], tmp_arr[1], tmp_arr[2], tmp_arr[3])
             console.log(response)
             const finalDish = await getDish()
             finalDish.forEach(data => console.log(data))
+            let arr_tmp=[]
+            let arr_tmp_1=[]
+            for (const data of finalDish) {
+                arr_tmp.push(data.RestaurantIdRestaurant)
+            }
+            arr_tmp.forEach(async data => {
+                arr_tmp_1.push((await getOneRestaurant({idRestaurant: data})).name)
+            })
+            console.log(arr_tmp_1)
+            user.setRestaurants(arr_tmp_1)
             user.setFinalDish(finalDish)
+            user.clearChoice()
             setStep(6  )
         }
 
@@ -90,24 +104,22 @@ const Swipe = () => {
                 {
                     // тут получу еду и выведу, также нужны картинки
                     step === 6 && (
-                        <Container className="mt-3">
-                            <Row>
-
+                        <div className={"card"}>
+                            <h2>Напи предложения</h2>
                                 {
                                     user.finalDish.map((data) =>
-                                        <div key={data.idDish}>
-                                            <Col md={4}>{data.dishname}</Col>
-                                            <Col md={4}>{data.dishRating}</Col>
-                                            <Col md={4}>
-                                                <Image width ={100} height={100} src = {process.env.REACT_APP_API_URL+'static/'+data.image}/>
+                                        <Stack direction={"horizontal"} gap={3} key={data.idDish}>
+                                            <Col md={120}>{data.dishname}</Col>
+                                            <Col md={120}>{data.dishRating}</Col>
+                                            <Col md={120}>
+                                                <Image width ={50} height={50} src ={`${process.env.REACT_APP_API_URL}static/${data.image}`}/>
                                             </Col>
-                                        </div>
+                                        </Stack>
 
                                     )
                                 }
+                        </div>
 
-                            </Row>
-                        </Container>
                     )
                 }
             </div>

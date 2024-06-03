@@ -1,10 +1,11 @@
 const path = require('path')
 const {Restaurant, User} = require('../models/models')
 const ApiError = require('../error/ApiError')
-const {where} = require("sequelize");
+const {where, QueryTypes} = require("sequelize");
 const jwt = require("jsonwebtoken");
 const uuid = require("uuid");
 
+const sequelize = require('../db')
 async function get_user_id(token) {
     const decoded = jwt.verify(token, process.env.SECRET_KEY)
     const email = decoded["email"]
@@ -33,18 +34,19 @@ class RestaurantController
         }
     }
     async getOne(req, res, next) {
-        const {idRestaurant} = req.body
-        let restaurant
-        if (idRestaurant) {
-            restaurant = await Restaurant.findOne(
-                {
-                    where: {
-                        idRestaurant: idRestaurant
-                    }
+        try {
+            const {idRestaurant} = req.body
+            let restaurant
+            restaurant = await Restaurant.findOne({
+                where: {
+                    idRestaurant: idRestaurant
                 }
-            )
+            })
+            console.log(restaurant + "___")
+            return res.json(restaurant)
+        } catch (e) {
+            next(ApiError.badRequest(e.message))
         }
-        return res.json(restaurant)
     }
     async getAll(req, res, next){
         const token = req.headers.authorization.split(' ')[1]

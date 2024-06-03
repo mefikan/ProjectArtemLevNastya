@@ -8,7 +8,14 @@ export default class UserStore {
         this._tag=''
         this._finalDish=[]
         this._usedIndexes=[]
+        this._restaurants = []
         makeAutoObservable(this)
+    }
+    setRestaurants(restaurants){
+        this._restaurants = restaurants
+    }
+    get Restaurants(){
+        return this._restaurants
     }
     addUsedIndexes(index){
         this._usedIndexes.push(index)

@@ -112,7 +112,7 @@ class SwipeController
             еще добавлена сортировка по рейтингу и отображение id и названия картинки
              */
             let FindDishInd = await sequelize.query(
-                'SELECT gr.cnt, di."dishName" as DishName, di."dishRating", di."idDish", di."image"\n' +
+                'SELECT gr.cnt, di."dishName" as DishName, di."dishRating", di."idDish", di."image", di."RestaurantIdRestaurant"\n' +
                 '            FROM(\n' +
                 '\t            SELECT COUNT(*) as cnt, fp."DishIdDish" as did\n' +
                 '\t            FROM "Foodproperties" as fp\n' +
@@ -137,7 +137,6 @@ class SwipeController
                     type: QueryTypes.SELECT
                 }
             )
-            console.log(FindDishInd)
             return res.json(FindDishInd)
         } catch (e) {
             next(ApiError.badRequest(e.message))

@@ -8,3 +8,8 @@ export const getAllRestaurants = async () => {
     const {data} = await $authHost.get('api/restaurant/getAll')
     return data
 }
+
+export const getOneRestaurant = async (id) => {
+    const {data} = await  $authHost.post('api/restaurant/getOne', id)
+    return data
+}

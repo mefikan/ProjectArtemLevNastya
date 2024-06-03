@@ -3,7 +3,7 @@ export const LOGIN_ROUTE = '/login'
 export const REGISTRATION_ROUTE = '/registration'
 export const LIST_ROUTE = '/registration'
 export const RESTAURANT_ROUTE = '/restaurant'
-export const HOME_ROUTE = '/'
+export const HOME_ROUTE = '/swipe'
 
 export const foodArr = [
     ['Сладкое', 'Солёное'],
