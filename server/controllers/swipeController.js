@@ -21,29 +21,34 @@ class SwipeController
         return res.json(property)
     }
     async swipeAddProperties(req, res, next) {
-        const {tag, ch1, ch2, ch3, ch4} = req.body
-        const token = req.headers.authorization.split(' ')[1]
-        const UserIdUser = await getUserId(token)
-        const swipe = await Swipe.create({tag, UserIdUser})
+        try {
+            const {tag, ch1, ch2, ch3, ch4} = req.body
+            const token = req.headers.authorization.split(' ')[1]
+            const UserIdUser = await getUserId(token)
+            const swipe = await Swipe.create({tag, UserIdUser})
 
-        const swipeId = await getCurrentUserSwipeId(token)
-        await SwipeFoodproperty.create({
-            propertyname: ch1,
-            SwipeIdswipes: swipeId
-        })
-        await SwipeFoodproperty.create({
-            propertyname: ch2,
-            SwipeIdswipes: swipeId
-        })
-        await SwipeFoodproperty.create({
-            propertyname: ch3,
-            SwipeIdswipes: swipeId
-        })
-        await SwipeFoodproperty.create({
-            propertyname: ch4,
-            SwipeIdswipes: swipeId
-        })
-        return res.json("success!")
+            const swipeId = await getCurrentUserSwipeId(token)
+            await SwipeFoodproperty.create({
+                propertyname: ch1,
+                SwipeIdswipes: swipeId
+            })
+            await SwipeFoodproperty.create({
+                propertyname: ch2,
+                SwipeIdswipes: swipeId
+            })
+            await SwipeFoodproperty.create({
+                propertyname: ch3,
+                SwipeIdswipes: swipeId
+            })
+            await SwipeFoodproperty.create({
+                propertyname: ch4,
+                SwipeIdswipes: swipeId
+            })
+            return res.json("success!")
+        } catch (e) {
+            next(ApiError.badRequest(e.message))
+        }
+
     }
     /*Создание свайпа с привязкой к пользователю*/
     async create(req, res, next) {
@@ -94,44 +99,49 @@ class SwipeController
         return res.json(properties)
     }
     async getDishAccordingToSwipes(req, res, next){
-        const token = req.headers.authorization.split(' ')[1]
-        const swipeId = await getCurrentUserSwipeId(token)
-        const swipeTag = await getCurrentUserSwipeTag(token)
-        console.log(swipeTag)
-        const {Op} = require('sequelize')
-        /*
-        Нужно найти максимум совпадений между свойствами свайпа и св-вами блюда
-        Выберем свойства последнего свайпа и будем выбирать блюдо, имеющее
-        максимум( КОЛИЧЕСТВО (свойство свайпа * свойство блюда), где названия свойств равны)
-         */
-        let FindDishInd = await sequelize.query(
-            'SELECT gr.cnt, di."dishName" as DishName, menus."dishRating"\n' +
-            '            FROM(\n' +
-            '\t            SELECT COUNT(*) as cnt, fp."DishIdDish" as did\n' +
-            '\t            FROM "Foodproperties" as fp\n' +
-            '\t            inner join "SwipeFoodproperties" as sfp\n' +
-            '\t            on  fp.propertyname = sfp.propertyname\n' +
-            '\t            where sfp."SwipeIdswipes" = :swipeId_\n' +
-            '\t            group by did\n' +
-            '            ) as gr\n' +
-            '    \t\t      \n' +
-            '\t\t\tinner join "Dishes" as di on di."idDish" = gr.did\n' +
-            '\t\t\tinner join "Swipes" as sw on sw."tag" = di."dishTag"  \t\t\n' +
-            '\t\t\tinner join "Menus" as menus on  di."idDish" = menus."DishIdDish"        \n' +
-            '\t\t\twhere di."dishTag" = :swipeTag_' +
-            '            group by DishName, gr.cnt, menus."dishRating"\n' +
-            '            order by MAX(gr.cnt) DESC, \n' +
-            '\t\t\tMAX(menus."dishRating") desc LIMIT 1',
-    {
-                replacements: {
-                    swipeId_: swipeId,
-                    swipeTag_: swipeTag
-                },
-                type: QueryTypes.SELECT
-            }
-        )
-
-        return res.json(FindDishInd)
+        try {
+            const token = req.headers.authorization.split(' ')[1]
+            const swipeId = await getCurrentUserSwipeId(token)
+            const swipeTag = await getCurrentUserSwipeTag(token)
+            console.log(swipeTag)
+            const {Op} = require('sequelize')
+            /*
+            Нужно найти максимум совпадений между свойствами свайпа и св-вами блюда
+            Выберем свойства последнего свайпа и будем выбирать блюдо, имеющее
+            максимум( КОЛИЧЕСТВО (свойство свайпа * свойство блюда), где названия свойств равны),
+            еще добавлена сортировка по рейтингу и отображение id и названия картинки
+             */
+            let FindDishInd = await sequelize.query(
+                'SELECT gr.cnt, di."dishName" as DishName, di."dishRating", di."idDish", di."image"\n' +
+                '            FROM(\n' +
+                '\t            SELECT COUNT(*) as cnt, fp."DishIdDish" as did\n' +
+                '\t            FROM "Foodproperties" as fp\n' +
+                '\t            inner join "SwipeFoodproperties" as sfp\n' +
+                '\t            on  fp.propertyname = sfp.propertyname\n' +
+                '\t            where sfp."SwipeIdswipes" = :swipeId_\n' +
+                '\t            group by did\n' +
+                '            ) as gr\n' +
+                '    \t\t      \n' +
+                '\t\t\tinner join "Dishes" as di on di."idDish" = gr.did\n' +
+                '\t\t\tinner join "Swipes" as sw on sw."tag" = di."dishTag"  \t\t\n' +
+                '\t\t\twhere di."dishTag" = :swipeTag_' +
+                '            group by DishName, gr.cnt, di."dishRating", di."idDish", di."image"\n' +
+                '            order by MAX(gr.cnt) DESC, \n' +
+                '\t\t\tMAX(di."dishRating") desc LIMIT :dishLimit_',
+                {
+                    replacements: {
+                        swipeId_: swipeId,
+                        swipeTag_: swipeTag,
+                        dishLimit_: 3
+                    },
+                    type: QueryTypes.SELECT
+                }
+            )
+            console.log(FindDishInd)
+            return res.json(FindDishInd)
+        } catch (e) {
+            next(ApiError.badRequest(e.message))
+        }
     }
 }
 async function getUserId(token) {

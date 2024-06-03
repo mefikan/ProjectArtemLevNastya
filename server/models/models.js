@@ -10,7 +10,8 @@ const User = sequelize.define('User', {
 
 const Swipe = sequelize.define('Swipe', {
     idswipes: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    tag: {type: DataTypes.STRING}
+    tag: {type: DataTypes.STRING},
+    choseIdDish: {type: DataTypes.INTEGER}
 })
 
 const Note = sequelize.define('Note', {
@@ -24,7 +25,8 @@ const Restaurant = sequelize.define('Restaurant', {
     idRestaurant: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING, unique: true,},
     rating: {type: DataTypes.DOUBLE(2, 2)},
-    properties: {type: DataTypes.STRING}
+    properties: {type: DataTypes.STRING},
+    image: {type: DataTypes.STRING}
 })
 
 const FavoritePlaces = sequelize.define('FavoritePlaces', {
@@ -43,10 +45,8 @@ const Dish = sequelize.define('Dish', {
     dishName: {type: DataTypes.STRING},
     dishSize: {type: DataTypes.STRING},
     dishTag: {type: DataTypes.STRING},
-    imageId: {type: DataTypes.STRING}
-})
-
-const Menu = sequelize.define('Menu', {
+    image: {type: DataTypes.STRING},
+    description: {type: DataTypes.STRING},
     dishPrice: {type: DataTypes.DOUBLE(5,3)},
     dishRating: {type: DataTypes.DOUBLE(2,2)},
     ratesNumber: {type: DataTypes.INTEGER}
@@ -56,6 +56,7 @@ const Foodproperty = sequelize.define('Foodproperty', {
     idfoodproperty: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     propertyname: {type: DataTypes.STRING}
 })
+
 const SwipeFoodproperty = sequelize.define('SwipeFoodproperty', {
     idfoodproperty: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     propertyname: {type: DataTypes.STRING}
@@ -88,11 +89,8 @@ Visit_restaurant.belongsTo(Restaurant)
 Restaurant.hasOne(Address)
 Address.belongsTo(Restaurant)
 
-Restaurant.hasOne(Menu)
-Menu.belongsTo(Restaurant)
-
-Dish.hasMany(Menu)
-Menu.belongsTo(Dish)
+Restaurant.hasMany(Dish)
+Dish.belongsTo(Restaurant)
 
 Dish.hasMany(Foodproperty)
 Foodproperty.belongsTo(Dish)
@@ -108,7 +106,6 @@ module.exports = {
     FavoritePlaces,
     Address,
     Dish,
-    Menu,
     Foodproperty,
     Visit_restaurant,
     SwipeFoodproperty

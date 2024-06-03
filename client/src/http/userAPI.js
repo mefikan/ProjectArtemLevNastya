@@ -20,5 +20,6 @@ export  const createSwipeWithProps = async (tag, ch1, ch2, ch3, ch4) =>{
 }
 export  const getDish = async () =>{
     const data = await $authHost.get('api/swipe/getDish')
-    return data.data[0]
+    return data.data
 }
+

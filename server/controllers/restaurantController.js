@@ -1,9 +1,9 @@
-
 const path = require('path')
 const {Restaurant, User} = require('../models/models')
 const ApiError = require('../error/ApiError')
 const {where} = require("sequelize");
 const jwt = require("jsonwebtoken");
+const uuid = require("uuid");
 
 async function get_user_id(token) {
     const decoded = jwt.verify(token, process.env.SECRET_KEY)
@@ -20,11 +20,17 @@ async function get_user_id(token) {
 class RestaurantController
 {
     async create(req, res, next) {
+        try{
         const {name, rating, properties} = req.body
         const token = req.headers.authorization.split(' ')[1]
-        const UserIdUser = await get_user_id(token)
-        const restaurant = await Restaurant.create({name, rating, properties})
+        const {img} = req.files
+        let filename = uuid.v4() + ".jpg"
+        await img.mv(path.resolve(__dirname, '..', 'static', filename))
+        const restaurant = await Restaurant.create({name, rating, properties, image: filename})
         return res.json(restaurant)
+        } catch (e){
+            next(ApiError.badRequest(e.message))
+        }
     }
     async getOne(req, res, next) {
         const {idRestaurant} = req.body

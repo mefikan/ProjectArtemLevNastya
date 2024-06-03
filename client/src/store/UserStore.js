@@ -5,8 +5,8 @@ export default class UserStore {
         this._isAuth = false
         this._userToken = {}
         this._choice = []
-        this._tag={}
-        this._finalDish={}
+        this._tag=''
+        this._finalDish=[]
         this._usedIndexes=[]
         makeAutoObservable(this)
     }

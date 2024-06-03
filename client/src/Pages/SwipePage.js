@@ -2,65 +2,31 @@ import React, {useContext, useRef, useState} from 'react';
 import '../styles/Swipe.css';
 import {createSwipeWithProps, getDish, login, registration} from "../http/userAPI";
 import {Context} from "../index";
+import {foodArr, drinkArr} from "../utils/consts";
+import {Button, Card, Col, Container, Image, Row} from "react-bootstrap";
+
 let currentArray = []
 //тут нужно сократить все и сделать через useEffect, чтобы как тригер все работало и не было 1000 строк однотипного кодаы
 const Swipe = () => {
-        const foodArr = [
-            ['Сладкое', 'Солёное'],
-            ['Кислое','Пресное'],
-            ['Горькое','Нежное'],
-            ['Хрустящее','Мягкое'],
-            ['Жирное','Обезжиренное'],
-            ['Тяжелое','Лёгкое'],
-            ['Острое','Нейтральное'],
-            ['Тёплое','Холодное'],
-            ['Свежее','Испорченное'],
-            ['Ароматное','Безвкусное'],
-            ['Сырое','Готовое'],
-            ['Влажное','Сухое'],
-            ['Жесткое','Нежное'],
-            ['Плотное','Объёмное'],
-            ['Кремовое','Гранулированное'],
-            ['Густое','Жидкое'],
-            ['Питательное','Вредоносное'],
-            ['Сытное','Лёгкое'],
-            ['Традиционное','Экзотичное'],
-            ['Практичное','Непрактичное']
-        ]
-        const drinkArr = [
-            ['Сладкое','Солёное'],
-            ['Кислое','Пресное'],
-            ['Горькое','Нежное'],
-            ['Жирное','Обезжиренное'],
-            ['Тяжелое','Лёгкое'],
-            ['Острое','Нейтральное'],
-            ['Тёплое','Холодное'],
-            ['Ароматное','Безвкусное'],
-            ['Жесткое','Нежное'],
-            ['Плотное','Объёмное'],
-            ['Питательное','Вредоносное'],
-            ['Сытное','Лёгкое'],
-            ['Традиционное','Экзотичное'],
-            ['Практичное','Непрактичное'],
-            ['Бодрящее','Нудное']
-        ]
         let {user} = useContext(Context)
 
         const [step, setStep] = useState(0);
-        const [foodType, setFoodType] = useState(-1); // 0 - еда, 1 - напитки
+        const [foodType, setFoodType] = useState(''); // 0 - еда, 1 - напитки
         const [left, setLeft] = useState('Еда')
         const [right, setRight] = useState('Напитки')
         const HandleCardClick = (name, side) => {
             console.log(step)
+            console.log(name)
             if (step === 0)
             {
-                setFoodType(name === 'Еда' ? 0 : 1)
-                if (foodType === 0){
+                setFoodType(name)
+                if (foodType === 'Еда'){
                     currentArray = foodArr
                 }
                 else{
                     currentArray = drinkArr
                 }
+                user.setTag(foodType)
             }
             if (step <= 4) {
                 setStep(step + 1)
@@ -75,26 +41,25 @@ const Swipe = () => {
                         setRight(currentArray[pairIndex][1])
                     }
                 }
+                if (step!==0)
+                    user.addToChoice(name)
             }
+
         }
         async function HandleOkClick() {
-            let finalDish = await getDish()
-            console.log(finalDish)
+            let tmp_arr = user.choice
+            user.clearChoice()
+            let response = await createSwipeWithProps(foodType, tmp_arr[0], tmp_arr[1], tmp_arr[2], tmp_arr[3])
+            console.log(response)
+            const finalDish = await getDish()
+            finalDish.forEach(data => console.log(data))
+            user.setFinalDish(finalDish)
             setStep(6  )
-            user.setFinalDish(finalDish.dishname)
         }
+
 
         return (
             <div className="app">
-                {
-                    // тут получу еду и выведу, также нужны картинки
-                    step === 6 && (
-                        <div className="app">
-
-
-                        </div>
-                    )
-                }
                 {step === 5 && (
                     <div className="app">
                         <div className="card">
@@ -122,6 +87,29 @@ const Swipe = () => {
                         </div>
                     </div>
                 )}
+                {
+                    // тут получу еду и выведу, также нужны картинки
+                    step === 6 && (
+                        <Container className="mt-3">
+                            <Row>
+
+                                {
+                                    user.finalDish.map((data) =>
+                                        <div key={data.idDish}>
+                                            <Col md={4}>{data.dishname}</Col>
+                                            <Col md={4}>{data.dishRating}</Col>
+                                            <Col md={4}>
+                                                <Image width ={100} height={100} src = {process.env.REACT_APP_API_URL+'static/'+data.image}/>
+                                            </Col>
+                                        </div>
+
+                                    )
+                                }
+
+                            </Row>
+                        </Container>
+                    )
+                }
             </div>
 
         )
