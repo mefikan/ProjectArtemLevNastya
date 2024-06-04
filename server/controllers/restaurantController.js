@@ -36,14 +36,13 @@ class RestaurantController
     async getOne(req, res, next) {
         try {
             const {idRestaurant} = req.body
-            let restaurant
-            restaurant = await Restaurant.findOne({
+            const restaurant = await Restaurant.findOne({
                 where: {
                     idRestaurant: idRestaurant
                 }
             })
-            console.log(restaurant + "___")
-            return res.json(restaurant)
+            console.log(restaurant)
+            return res.json(restaurant["dataValues"])
         } catch (e) {
             next(ApiError.badRequest(e.message))
         }
